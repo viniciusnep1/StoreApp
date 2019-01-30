@@ -23,6 +23,14 @@ namespace WebApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
             var categories = _context.Categories.ToList();
@@ -34,7 +42,7 @@ namespace WebApp.Controllers
         {
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }
