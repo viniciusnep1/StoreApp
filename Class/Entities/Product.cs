@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Domain.Entities
 {
-    public class Product
+    public class Product : BaseEntity
     {
-        public Guid Id{ get; set; }
         public string Name { get; set; }
         public Category Category { get; set; }
     }

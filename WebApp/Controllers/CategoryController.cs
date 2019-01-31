@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _service;
 
-        public CategoryController(ApplicationDbContext context)
+        public CategoryController(ICategoryService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
@@ -24,24 +25,29 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public IActionResult Update()
         {
-            var category = await _context.Categories.FindAsync(id);
             return View();
+        }
+
+        [HttpPut]
+        public IActionResult Edit(Category category)
+        {
+            _service.Update(category);
+            return View("Index");
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _service.GetAll();
             return View(categories);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(Category category)
+        public IActionResult Save(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            _service.Save(category);
             return RedirectToAction("Index");
         }
     }

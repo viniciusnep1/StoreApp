@@ -10,7 +10,7 @@ namespace Repository.Interfaces
     public interface IRepository<T> where T : BaseEntity
     {
         IEnumerable<T> GetAll();
-        T Get(long id);
+        T Get(Guid id);
         IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate);
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         void Insert(T entity);
