@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Data;
 using Data.Interface;
+using Data.Repository;
 using Domain.Entities;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -46,7 +47,7 @@ namespace WebApp
 
             services.AddMvc();
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Data.Repository.Repository<>));
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
 
