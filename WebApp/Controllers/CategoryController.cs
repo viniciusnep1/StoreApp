@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Repository;
+using Services.Dtos;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace WebApp.Controllers
 {
-    public class CategoryController : Controller
+    [ApiController]
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
 
@@ -18,37 +19,28 @@ namespace WebApp.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult Save()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Update()
-        {
-            return View();
-        }
-
+        [Route("api/[controller]")]
         [HttpPut]
         public IActionResult Edit(Category category)
         {
             _service.Update(category);
-            return View("Index");
+            return Ok();
         }
 
+        [Route("api/[controller]")]
         [HttpGet]
-        public IActionResult Index()
+        public CategoryViewModel Get()
         {
             var categories = _service.GetAll();
-            return View(categories);
+            return categories;
         }
 
+        [Route("api/[controller]")]
         [HttpPost]
         public IActionResult Save(Category category)
         {
             _service.Save(category);
-            return RedirectToAction("Index");
+            return Ok();
         }
     }
 }

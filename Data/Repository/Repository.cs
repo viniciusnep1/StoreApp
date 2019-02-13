@@ -1,22 +1,20 @@
-﻿using Domain;
+﻿using Data.Interface;
+using Domain;
 using Microsoft.EntityFrameworkCore;
-using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Repository.Implementation
+namespace Data.Repository
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        protected readonly ApplicationDbContext context;
+        protected readonly ApplicationContext context;
         protected DbSet<T> entities;
         string errorMessage = string.Empty;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(ApplicationContext context)
         {
             this.context = context;
             entities = context.Set<T>();
@@ -27,22 +25,22 @@ namespace Repository.Implementation
             return entities.AsEnumerable();
         }
 
-        public T Get(Guid id)
+        public T Get(long id)
         {
             return entities.SingleOrDefault(s => s.Id == id);
         }
 
-        public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
-        {
-            return context.Set<T>().Where(predicate);
-        }
+        //public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
+        //{
+        //    return context.Set<T>().Where(predicate);
+        //}
 
-        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
-        {
-            var query = context.Set<T>().Where(predicate);
+        //public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        //{
+        //    var query = context.Set<T>().Where(predicate);
 
-            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-        }
+        //    return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        //}
 
         public void Insert(T entity)
         {

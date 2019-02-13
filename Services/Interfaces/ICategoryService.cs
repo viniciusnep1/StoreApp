@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Services.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,9 +8,9 @@ namespace Services.Interfaces
 {
     public interface ICategoryService
     {
-        List<Category> GetAll();
+        CategoryViewModel GetAll();
 
-        Category GetById(Guid id);
+        Category GetById(Int64 id);
 
         void Save(Category category);
 

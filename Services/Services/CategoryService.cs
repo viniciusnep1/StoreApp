@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using Data.Interface;
 using Domain.Entities;
-using Repository.Interfaces;
+using Services.Dtos;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,18 @@ namespace Services.Services
             this.mapper = mapper;
         }
 
-        public List<Category> GetAll()
+        public CategoryViewModel GetAll()
         {
             var categories = repository.GetAll();
-            return categories.ToList();
+            var categoryMap = mapper.Map<List<Category>>(categories);
+            var categoryViewModel = new CategoryViewModel();
+            foreach (var item in categoryMap)
+                categoryViewModel.categories.Add(item);
+
+            return categoryViewModel;
         }
 
-        public Category GetById(Guid id)
+        public Category GetById(Int64 id)
         {
             var category = repository.Get(id);
             return category;
