@@ -30,18 +30,6 @@ namespace Data.Repository
             return entities.SingleOrDefault(s => s.Id == id);
         }
 
-        //public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
-        //{
-        //    return context.Set<T>().Where(predicate);
-        //}
-
-        //public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
-        //{
-        //    var query = context.Set<T>().Where(predicate);
-
-        //    return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-        //}
-
         public void Insert(T entity)
         {
             if (entity == null)
