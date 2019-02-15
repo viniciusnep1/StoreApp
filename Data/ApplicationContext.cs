@@ -15,6 +15,7 @@ namespace Data
             base.OnModelCreating(modelBuilder);
             new CategoryMap(modelBuilder.Entity<Category>());
             new ProductMap(modelBuilder.Entity<Product>());
+            new UserMap(modelBuilder.Entity<User>());
         }
     }
 }
