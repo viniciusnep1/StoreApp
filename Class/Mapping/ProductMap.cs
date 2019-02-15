@@ -12,6 +12,7 @@ namespace Domain.Mapping
         {
             product.HasKey(t => t.Id);
             product.Property(t => t.Name).IsRequired();
+            product.HasOne(t => t.Category);
         }
     }
 }
