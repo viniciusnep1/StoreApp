@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace WebApp.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -23,21 +22,24 @@ namespace WebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]User user)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
-
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
-
-            return Ok(user);
+            var users = _userService.Authenticate(user.Username, user.Password);
+            return Ok("\"" + users.Token + "\"");
+        }
+        public IActionResult Create([FromBody]User user)
+        {
+            _userService.Create(user);
+            return Ok();
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
             return Ok(users);
         }
+
     }
 }

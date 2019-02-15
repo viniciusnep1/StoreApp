@@ -13,6 +13,8 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Domain;
+using System.Threading.Tasks;
+using Microsoft.IdentityModel.Logging;
 
 namespace Services.Services
 {
@@ -20,7 +22,7 @@ namespace Services.Services
     {
         private IRepository<User> _userRepository;
         private IMapper _mapper;
-        private readonly AppSettings _appSettings;
+        private AppSettings _appSettings;
 
         public UserService(IRepository<User> userRepository, IMapper mapper, IOptions<AppSettings> appSettings)
         {
@@ -56,12 +58,19 @@ namespace Services.Services
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+            IdentityModelEventSource.ShowPII = true;
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
 
             user.Password = null;
 
             return user;
+        }
+
+        public void Create(User user)
+        {
+            _userRepository.Insert  (user);
         }
     }
 }

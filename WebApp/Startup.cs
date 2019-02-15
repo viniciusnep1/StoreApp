@@ -109,9 +109,7 @@ namespace WebApp
                 .AllowAnyHeader());
 
             app.UseAuthentication();
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseHttpMethodOverride();
 
             app.UseMvc();
         }

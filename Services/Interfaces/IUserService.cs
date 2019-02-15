@@ -11,5 +11,6 @@ namespace Services.Interfaces
         UserViewModel GetAll();
 
         User Authenticate(string username, string password);
+        void Create(User user);
     }
 }
