@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Data.Repository
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : Interface.IRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationContext context;
         protected DbSet<T> entities;
@@ -24,6 +25,14 @@ namespace Data.Repository
         {
             return entities.AsEnumerable();
         }
+
+        public IQueryable<T> Find(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = context.Set<T>().Where(predicate);
+
+            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        }
+
 
         public T Get(long id)
         {
